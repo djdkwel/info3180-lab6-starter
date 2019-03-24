@@ -9,19 +9,72 @@ Vue.component('app-header', {
               </button>
 
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                  <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">News</a>
-                  </li>
+                <ul class="navbar-nav mr-auto"> 
+                    <li class="nav-item active"> 
+                        <router-link to="/" class="nav-link">Home</router-link> 
+                    <li>
+                    <li class="nav-item active"> 
+                        <router-link to="/news" class="nav-link">News</router-link> 
+                    </li>
                 </ul>
+                
               </div>
             </nav>
         </header>    
     `,
     data: function() {}
+});
+const NewsList = Vue.component('news-list',{
+    template:`
+    <div class="news"> 
+        <h2>News</h2> 
+        <ul class="news__list"> 
+            <li v-for="article in articles"
+            
+        class="news__list">{{article.title}}{{:src="article.84b77ab6959b4ccf8faddead03451290"}}{{article.description}}</li>
+       
+        </ul>
+    <div class="form-inline d-flex justify-content-cent
+        <div class="form-group mx-sm-3 mb">
+            <label class="sr-only" for="search">Search</label> 
+             <input type="search" name="search" v-model="searchTerm"id="search" class="form-control mb-2 mr-sm-2" placeholder="Enter search term here" /> 
+             <button class="btn btn-primary mb-2"@click="searchNews">Search</button>
+             </div>
+             </div>
+    </div>`
+    
+    ,
+    created: function(){
+        let self = this;
+        fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=84b77ab6959b4ccf8faddead03451290').then(function(response){
+            return response.json();
+        }).then(function(data){
+            console.log(data);
+            self.articles = data.articles;
+      
+        });
+    },
+    data: function(){
+        return {
+            articles: [],
+            searchTerm: '' 
+        }
+    },
+    methods:{
+        searchNews: function(){
+            let self = this;
+            fetch('https://newsapi.org/v2/everything?q='+
+        self.searchTerm + '&language=en&apiKey=84b77ab6959b4ccf8faddead03451290') 
+        .then(function(response) { 
+            return response.json(); 
+            }) 
+            .then(function(data) { 
+                console.log(data); 
+                self.articles = data.articles; 
+            }); 
+        }
+    }
+     
 });
 
 Vue.component('app-footer', {
@@ -37,13 +90,31 @@ Vue.component('app-footer', {
             year: (new Date).getFullYear()
         }
     }
+});
+
+const Home = Vue.component('home', {
+    template:`
+    <div class="home">
+         <img src="/static/images/logo.png" alt="VueJS Logo">
+         <h1>{{ welcome }}</h1> 
+         </div>   `,
+    data: function(){
+        return {
+            welcome: 'Hello World! Welcome to VueJS'
+        }
+    }
+});
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        {path: '/', component: Home },
+        {path: '/news', component: NewsList }
+        ]
 })
 
-
-let app = new Vue({
+const app = new Vue({
     el: '#app',
-    data: {
-        welcome: 'Hello World! Welcome to VueJS'
-    }
+    router
 });
 
