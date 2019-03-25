@@ -31,7 +31,7 @@ const NewsList = Vue.component('news-list',{
         <ul class="news__list"> 
             <li v-for="article in articles"
             
-        class="news__list">{{article.title}}{{:src="article.84b77ab6959b4ccf8faddead03451290"}}{{article.description}}</li>
+        class="news__list">{{article.title}}{{article.description}}</li>
        
         </ul>
     <div class="form-inline d-flex justify-content-cent
@@ -46,7 +46,7 @@ const NewsList = Vue.component('news-list',{
     ,
     created: function(){
         let self = this;
-        fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=84b77ab6959b4ccf8faddead03451290').then(function(response){
+        fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=<>').then(function(response){
             return response.json();
         }).then(function(data){
             console.log(data);
@@ -64,7 +64,7 @@ const NewsList = Vue.component('news-list',{
         searchNews: function(){
             let self = this;
             fetch('https://newsapi.org/v2/everything?q='+
-        self.searchTerm + '&language=en&apiKey=84b77ab6959b4ccf8faddead03451290') 
+        self.searchTerm + '&language=en&apiKey=<>') 
         .then(function(response) { 
             return response.json(); 
             }) 
